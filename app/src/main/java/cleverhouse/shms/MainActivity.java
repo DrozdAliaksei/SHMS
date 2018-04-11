@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener , View.OnClickListener{
 
-    TextView textView ;
-    Button btnConnect;
-    Switch switch3;
+    private TextView textView ;
+    private Button btnConnect;
+    private Switch switch3;
 
     String con1 , con2;
 

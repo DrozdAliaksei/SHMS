@@ -76,6 +76,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="WIFI_DISABLED" />
+            android:checked="false"
+            android:textOff="WIFI_Off"
+            android:textOn="WIFI_On"/>
     </LinearLayout>
 </LinearLayout>

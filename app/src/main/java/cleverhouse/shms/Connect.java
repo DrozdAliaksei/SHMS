@@ -15,7 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Connect extends AppCompatActivity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener {
+public class Connect extends AppCompatActivity implements View.OnClickListener  {
 
     EditText etName;
     EditText etName2;
@@ -28,7 +28,7 @@ public class Connect extends AppCompatActivity implements View.OnClickListener ,
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           // int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, Integer.parseInt(WifiManager.EXTRA_PREVIOUS_WIFI_STATE));
+           //int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,Integer.parseInt(WifiManager.EXTRA_PREVIOUS_WIFI_STATE));
 
             int wifiState = wifiManager.getWifiState();
             switch (wifiState){
@@ -67,18 +67,29 @@ public class Connect extends AppCompatActivity implements View.OnClickListener ,
         btnOK.setOnClickListener(this);
         status = (TextView) findViewById(R.id.status);
         statusConnection = (Switch) findViewById(R.id.statusConnection);
-        statusConnection.setOnCheckedChangeListener(this);
-        /*
-        if (wifiManager.getWifiState()== WifiManager.WIFI_STATE_DISABLED){
+
+
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiManager.isWifiEnabled()){
+            statusConnection.setChecked(true);
+        }
+        else{
             statusConnection.setChecked(false);
         }
-        else
-            statusConnection.setChecked(true);
-        */
         statusConnection.setChecked(false);
         registerReceiver(receiver, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
 
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        statusConnection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    wifiManager.setWifiEnabled(true);
+                }
+                else
+                    wifiManager.setWifiEnabled(false);
+            }
+        });
     }
 
     @Override
@@ -95,33 +106,4 @@ public class Connect extends AppCompatActivity implements View.OnClickListener ,
         super.onDestroy();
         unregisterReceiver(receiver);
     }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked == false){
-            statusConnection.setText("Wifi_OFF");
-            statusConnection.setChecked(false);
-            wifiManager.setWifiEnabled(false);
-        }
-        if(isChecked == true) {
-            statusConnection.setText("Wifi_ON");
-            statusConnection.setChecked(true);
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-
-    /*
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED && isChecked == true) {
-            status.setText("WIFI_ENABLED");
-            wifiManager.setWifiEnabled(true);
-        }
-        if(wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED && isChecked == false) {
-            status.setText("WIFI_DISABLED");
-            wifiManager.setWifiEnabled(false);
-        }
-    }
-    */
-
 }
