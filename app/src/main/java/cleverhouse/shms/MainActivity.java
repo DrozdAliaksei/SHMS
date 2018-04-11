@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity  implements CompoundButton.O
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked == true)
+        if(isChecked)
         {switch3.setText("Выключить лампочку");}
-        if(isChecked == false)
+        else
         {switch3.setText("Включить лампочку");}
     }
 
